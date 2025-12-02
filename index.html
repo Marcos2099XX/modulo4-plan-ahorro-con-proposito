@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulo 4: Mi plan de ahorro con propósito</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: #10172a;
+      --muted: #c6cce2;
+      --text: #e9ecf8;
+      --primary: #7c9cff;
+      --primary-strong: #5a7bff;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --ring: rgba(124,156,255,.45);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius-xl: 18px;
+      --radius-md: 14px;
+      --radius-sm: 8px;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f5f7fb;
+        --card: #ffffff;
+        --muted: #5a647d;
+        --text: #101423;
+        --shadow: 0 10px 30px rgba(16,20,35,.08);
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background:
+        radial-gradient(1200px 600px at 80% -10%, rgba(124,156,255,.25), transparent 60%),
+        radial-gradient(900px 500px at -10% 10%, rgba(34,197,94,.18), transparent 55%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 24px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto 40px;
+    }
+
+    .header {
+      padding: 24px 24px 10px;
+      text-align: left;
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        text-align: center;
+      }
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(124,156,255,.18);
+      color: var(--primary);
+      font-weight: 600;
+      font-size: .8rem;
+      letter-spacing: .3px;
+      margin-bottom: 10px;
+    }
+
+    .badge i {
+      font-size: 0.85rem;
+    }
+
+    .title {
+      margin: 0 0 6px 0;
+      font-size: clamp(1.7rem, 3vw, 2.2rem);
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .instructions {
+      margin: 18px 0;
+      padding: 14px 16px;
+      background: rgba(124,156,255,.08);
+      border: 1px solid rgba(124,156,255,.15);
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .instructions i {
+      color: var(--primary);
+    }
+
+    main {
+      margin-top: 10px;
+    }
+
+    .steps-indicator {
+      display: flex;
+      gap: 8px;
+      margin: 0 0 16px;
+      font-size: 0.8rem;
+    }
+
+    .step-pill {
+      flex: 1;
+      padding: 6px 10px;
+      border-radius: 999px;
+      text-align: center;
+      background: rgba(148,163,184,.14);
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .step-pill--active {
+      background: rgba(124,156,255,.25);
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(260px, 1fr);
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: minmax(0,1fr);
+      }
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(124,156,255,.15);
+      box-shadow: var(--shadow);
+      padding: 20px 22px;
+    }
+
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card h2 i {
+      font-size: 0.95rem;
+      color: var(--primary);
+    }
+
+    .card p {
+      margin: 0 0 10px;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 8px 0 12px;
+    }
+
+    .pill-tag {
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(148,163,184,.18);
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill-tag i {
+      font-size: 0.75rem;
+    }
+
+    .info-card {
+      background: rgba(124,156,255,.1);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      margin: 10px 0 14px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.88rem;
+    }
+
+    .info-card i {
+      color: var(--primary);
+      margin-top: 3px;
+      font-size: 0.85rem;
+    }
+
+    .info-card strong {
+      color: var(--text);
+    }
+
+    .list-compact {
+      margin: 6px 0 0 16px;
+      padding: 0;
+      font-size: 0.85rem;
+      color: var(--muted);
+      list-style: disc;
+    }
+
+    .list-compact li {
+      margin-bottom: 3px;
+    }
+
+    .highlight-badges {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 8px;
+      margin: 12px 0 4px;
+    }
+
+    .highlight-badge {
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      font-size: 0.78rem;
+      background: rgba(15,23,42,.8);
+      border: 1px solid rgba(148,163,184,.35);
+    }
+
+    .highlight-badge span {
+      display: block;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    .highlight-badge strong {
+      font-size: 0.9rem;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+      padding: 9px 16px;
+      border-radius: var(--radius-sm);
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+      color: #fff;
+      box-shadow: 0 4px 15px var(--ring);
+      transition: all .2s ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 7px 22px var(--ring);
+      filter: brightness(1.05);
+    }
+
+    .btn-primary i {
+      font-size: 0.9rem;
+    }
+
+    .hint {
+      margin-top: 10px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .mini-section-title {
+      margin: 10px 0 4px;
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 6px 0 8px;
+    }
+
+    .chip {
+      font-size: 0.76rem;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(148,163,184,.14);
+      color: var(--muted);
+    }
+
+    .summary-card {
+      margin: 8px 0 4px;
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      background: rgba(15,23,42,.8);
+      border: 1px solid rgba(148,163,184,.35);
+      font-size: 0.8rem;
+    }
+
+    .summary-card span {
+      display: block;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    .summary-card strong {
+      font-size: 0.9rem;
+    }
+
+    .obstacles-box {
+      margin-top: 8px;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      background: rgba(15,23,42,.85);
+      border: 1px solid rgba(239,68,68,.35);
+      font-size: 0.82rem;
+    }
+
+    .obstacles-box strong {
+      color: var(--danger);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="badge">
+        <i class="fas fa-layer-group"></i>
+        Módulo 4 · Ahorra con propósito
+      </div>
+      <h1 class="title">Actividad: Mi plan de ahorro con propósito</h1>
+      <p class="subtitle">
+        Convierte tu meta SMART prioritaria en un plan de ahorro realista: cuánto ahorrar, cada cuándo y de dónde saldrá ese dinero.
+      </p>
+    </header>
+
+    <main>
+      <section class="instructions" aria-label="Instrucciones generales de la actividad">
+        <i class="fas fa-info-circle"></i>
+        <div>
+          <strong>Objetivo:</strong> diseñar un plan de ahorro básico a partir de tu meta SMART prioritaria, conectándolo con tu presupuesto y anticipando obstáculos.
+        </div>
+      </section>
+
+      <nav class="steps-indicator" aria-label="Pasos de la actividad">
+        <div class="step-pill step-pill--active">1 · Elige tu meta SMART</div>
+        <div class="step-pill">2 · Calcula tu ahorro</div>
+        <div class="step-pill">3 · Ajusta y planea</div>
+      </nav>
+
+      <div class="layout">
+        <!-- LADO IZQUIERDO: META + CÁLCULO + TABLA -->
+        <section class="card" aria-labelledby="paso1-titulo">
+          <h2 id="paso1-titulo">
+            <i class="fas fa-piggy-bank"></i>
+            Paso 1 y 2: Meta prioritaria + cuánto ahorrar
+          </h2>
+
+          <div class="pill-row">
+            <span class="pill-tag"><i class="fas fa-star"></i> Meta SMART prioritaria</span>
+            <span class="pill-tag"><i class="fas fa-calculator"></i> Cálculo por periodo</span>
+          </div>
+
+          <div class="mini-section-title">1. Escribe tu meta SMART prioritaria</div>
+          <p style="margin-bottom: 6px;">
+            Retoma la <strong>Meta 1</strong> de la Actividad 1 y escríbela al inicio de tu hoja como recordatorio.
+          </p>
+
+          <div class="mini-section-title">2. Calcula cuánto necesitas ahorrar</div>
+          <p style="margin-bottom: 6px;">
+            Completa estos datos en tu plantilla:
+          </p>
+
+          <div class="highlight-badges">
+            <div class="highlight-badge">
+              <span>Paso 1</span>
+              <strong>Monto total</strong>
+              <p style="margin:4px 0 0; font-size:0.78rem; color:var(--muted);">
+                Monto total de la meta: $ ______
+              </p>
+            </div>
+            <div class="highlight-badge">
+              <span>Paso 2</span>
+              <strong>Tiempo</strong>
+              <p style="margin:4px 0 0; font-size:0.78rem; color:var(--muted);">
+                Tiempo para lograrla (meses o semanas): ______
+              </p>
+            </div>
+            <div class="highlight-badge">
+              <span>Paso 3</span>
+              <strong>División</strong>
+              <p style="margin:4px 0 0; font-size:0.78rem; color:var(--muted);">
+                Divide monto total ÷ número de meses/sem.
+              </p>
+            </div>
+            <div class="highlight-badge">
+              <span>Paso 4</span>
+              <strong>Ahorro por periodo</strong>
+              <p style="margin:4px 0 0; font-size:0.78rem; color:var(--muted);">
+                Resultado: cantidad a ahorrar por mes o semana.
+              </p>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <i class="fas fa-scale-balanced" aria-hidden="true"></i>
+            <div>
+              <strong>Tip:</strong> si la cantidad por periodo se ve muy alta, ajusta el tiempo o la meta para que sea más realista.
+            </div>
+          </div>
+
+          <div class="mini-section-title">3. Diseña tu plan de ahorro por periodos</div>
+          <p style="margin-bottom: 6px;">
+            En una tabla simple, incluye estas columnas:
+          </p>
+
+          <div class="highlight-badges" style="grid-template-columns: repeat(4, minmax(0,1fr));">
+            <div class="highlight-badge">
+              <span>Columna 1</span>
+              <strong>Periodo</strong>
+              <p style="margin:4px 0 0; font-size:0.78rem; color:var(--muted);">
+                Mes 1, Mes 2… o Sem. 1, Sem. 2…
+              </p>
+            </div>
+            <div class="highlight-badge">
+              <span>Columna 2</span>
+              <strong>Monto a ahorrar</strong>
+            </div>
+            <div class="highlight-badge">
+              <span>Columna 3</span>
+              <strong>Dónde lo guardo</strong>
+              <p style="margin:4px 0 0; font-size:0.78rem; color:var(--muted);">
+                Efectivo, cuenta, app, etc.
+              </p>
+            </div>
+            <div class="highlight-badge">
+              <span>Columna 4</span>
+              <strong>Comentarios</strong>
+              <p style="margin:4px 0 0; font-size:0.78rem; color:var(--muted);">
+                “Recibo aguinaldo”, “mes difícil”, etc.
+              </p>
+            </div>
+          </div>
+
+          <a 
+            class="btn-primary" 
+            href="#"
+            target="_blank" 
+            rel="noopener noreferrer"
+          >
+            <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
+            Abrir plantilla de plan de ahorro
+          </a>
+          <!-- Reemplaza el # de arriba con el enlace real a tu Google Sheets o formulario -->
+
+          <p class="hint">
+            Tu plan se considera claro si cualquier persona puede ver cuánto ahorrarás, cuándo y dónde se va a guardar.
+          </p>
+        </section>
+
+        <!-- LADO DERECHO: PRESUPUESTO + OBSTÁCULOS + PRODUCTO -->
+        <aside class="card" aria-labelledby="paso3-titulo">
+          <h2 id="paso3-titulo">
+            <i class="fas fa-list-check"></i>
+            Paso 3: Ajustes al presupuesto y obstáculos
+          </h2>
+
+          <div class="mini-section-title">1. Conecta tu meta con tu presupuesto</div>
+          <p style="margin-bottom: 6px;">
+            Revisa tu presupuesto del Módulo 2 (o arma uno rápido) y decide <strong>de dónde saldrá el dinero</strong>:
+          </p>
+          <ul class="list-compact">
+            <li>¿Reducirás algún gusto (salidas, apps, antojos)?</li>
+            <li>¿Reasignarás dinero de otra categoría?</li>
+          </ul>
+
+          <div class="summary-card">
+            <span>Cambios concretos</span>
+            <strong>Anota al menos dos ajustes que harás para liberar ese dinero.</strong>
+          </div>
+
+          <div class="mini-section-title">2. Anticipa obstáculos y soluciones</div>
+          <p style="margin-bottom: 4px;">
+            En 3–5 renglones responde:
+          </p>
+          <ul class="list-compact">
+            <li>¿Qué podría impedir que ahorres esa cantidad? (tentaciones, imprevistos, desorganización).</li>
+            <li>¿Qué harás cuando eso pase? (poner límites, ajustar un mes, mover fechas, etc.).</li>
+          </ul>
+
+          <div class="obstacles-box">
+            <strong>Ejemplos de soluciones:</strong>
+            <ul class="list-compact" style="margin-top:4px;">
+              <li>“Si me dan ganas de pedir comida, solo lo haré 1 vez por semana.”</li>
+              <li>“Si tengo un imprevisto, bajo un poco el ahorro ese mes, pero no lo cancelo.”</li>
+            </ul>
+          </div>
+
+          <div class="mini-section-title">3. Producto esperado</div>
+          <ul class="list-compact">
+            <li>Un plan de ahorro por periodos (meses o semanas) con montos claros.</li>
+            <li>Lista de al menos dos cambios específicos en tu forma de gastar para poder ahorrar.</li>
+            <li>Un breve análisis de obstáculos y estrategias para mantenerte en el plan.</li>
+          </ul>
+
+          <div class="chips">
+            <span class="chip">Plan por periodos</span>
+            <span class="chip">Cambios concretos</span>
+            <span class="chip">Obstáculos y soluciones</span>
+          </div>
+
+          <p class="hint">
+            La idea no es que sea perfecto, sino que sea <strong>realista</strong> y te acerque de verdad a tu meta SMART prioritaria.
+          </p>
+        </aside>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
